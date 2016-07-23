@@ -16,12 +16,7 @@ func (hand Hand) Scores() []int {
 			noOfAces ++
 		}
 
-		if card == "J" || card == "Q" || card == "K" {
-			score += 10
-		} else if card != "A" {
-			value, _ := strconv.Atoi(card)
-			score += value
-		}
+		score += hand.getScoreOfNonAce(card)
 	}
 
 	if noOfAces == 0 {
@@ -33,4 +28,15 @@ func (hand Hand) Scores() []int {
 	}
 
  	return possibleScores
+}
+
+func (hand Hand) getScoreOfNonAce(card string) int {
+	if card == "J" || card == "Q" || card == "K" {
+		return 10
+	} else if card != "A" {
+		value, _ := strconv.Atoi(card)
+		return value
+	} else {
+		return 0
+	}
 }
