@@ -1,42 +1,50 @@
 package blackjack
 
-import "strconv"
-
 type Hand struct {
-	Cards []string
+	Cards []Card
 }
 
 func (hand Hand) Scores() []int {
-	possibleScores := []int{}
-	noOfAces := 0
-	score := 0
+	possibleScores := []int{0}
 
 	for _, card := range hand.Cards {
-		if card == "A" {
-			noOfAces ++
+		possibleScores = hand.duplicateScoresWithCardValuesAdded(possibleScores, card)
+	}
+
+	return possibleScores
+}
+
+func (hand Hand) duplicateScoresWithCardValuesAdded(possibleScores []int, card Card) []int {
+	scores := []int{}
+
+	for _, cardValue := range card.Values {
+		for _, possibleScore := range possibleScores {
+			if(!hand.contains(scores, possibleScore + cardValue)) {
+				scores = append(scores, possibleScore + cardValue)	
+			}
 		}
-
-		score += hand.getScoreOfNonAce(card)
 	}
 
-	if noOfAces == 0 {
-		return []int{score}
-	}
-
-	for i := 0; i <= noOfAces; i ++ {
-		possibleScores = append(possibleScores, score + ((i  * 10) + noOfAces))
-	}
-
- 	return possibleScores
+	return scores
 }
 
-func (hand Hand) getScoreOfNonAce(card string) int {
-	if card == "J" || card == "Q" || card == "K" {
-		return 10
-	} else if card != "A" {
-		value, _ := strconv.Atoi(card)
-		return value
-	} else {
-		return 0
+func (hand Hand) contains(array []int, item int) bool {
+	for _, value := range array {
+		if value == item {
+			return true
+		}
 	}
-}
+	return false
+} 
+
+
+
+
+
+
+
+
+
+
+
+
