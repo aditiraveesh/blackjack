@@ -19,8 +19,9 @@ func (hand Hand) duplicateScoresWithCardValuesAdded(possibleScores []int, card C
 
 	for _, cardValue := range card.Values {
 		for _, possibleScore := range possibleScores {
-			if(!hand.contains(scores, possibleScore + cardValue)) {
-				scores = append(scores, possibleScore + cardValue)	
+			newPossibleScore := possibleScore + cardValue
+			if(!hand.contains(scores, newPossibleScore)) {
+				scores = append(scores, newPossibleScore)	
 			}
 		}
 	}
@@ -36,15 +37,3 @@ func (hand Hand) contains(array []int, item int) bool {
 	}
 	return false
 } 
-
-
-
-
-
-
-
-
-
-
-
-
